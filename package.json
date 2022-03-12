@@ -1,15 +1,16 @@
 {
   "name": "backend-auth",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
+  "type": "module",
   "engines": {
     "node": "16.13.1"
   },
   "scripts": {
-    "start": "node app.js",
-    "watch": "nodemon ./bin/www",
+    "start": "node index.js",
+    "watch": "nodemon ./bin/www.js",
     "macdev": "DEBUG=merceria-backend:* npm run watch",
-    "windev": "set DEBUG=merceria-backend:* & npm start"
+    "windev": "set DEBUG=merceria-backend:* & npm run watch"
   },
   "dependencies": {
     "atob": "^2.1.2",

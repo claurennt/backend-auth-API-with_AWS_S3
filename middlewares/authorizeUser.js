@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const atob = require("atob");
+import jwt from "jsonwebtoken";
+import atob from "atob";
 
 const { JWT_SECRET_KEY, JWT_ADMIN_KEY } = process.env;
 
@@ -15,7 +15,7 @@ const authorizeUser = (req, res, next) => {
   const payload = authToken.split(".")[1];
 
   //decode base64 encoded payload to string first and then parse it to JSON
-  const decodedUserData = JSON.parse(atob(payload));
+  const decodedUserData = JSON.parse(Buffer.from(payload, "base64"));
 
   //get role for role-based jwt verification
   const role = decodedUserData.role;
@@ -32,4 +32,4 @@ const authorizeUser = (req, res, next) => {
     next(e);
   }
 };
-module.exports = authorizeUser;
+export default authorizeUser;

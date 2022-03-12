@@ -1,10 +1,10 @@
 // here we create our schema and the  compile our schema into a model
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
+import dbClient from "../Client.js";
+import jwt from "jsonwebtoken";
+
 const Schema = mongoose.Schema;
-const dbClient = require("../Clients");
-
-const jwt = require("jsonwebtoken");
-
 // the schema is the blueprint of our  model
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
@@ -44,4 +44,4 @@ userSchema.methods.createToken = function () {
 //create the model out of the imported schema
 const User = dbClient.model("User", userSchema);
 
-module.exports = User;
+export default User;

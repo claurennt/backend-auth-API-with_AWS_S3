@@ -1,19 +1,13 @@
-const express = require("express");
+import express from "express";
 const authRouter = express.Router();
 
-const checkAdminToken = require("../middlewares/authorizeAdmin");
-const authorizeUser = require("../middlewares/authorizeUser");
-const authenticate_user = require("../controllers/users_controllers/authenticate_user");
-const {
-  create_new_user,
-} = require("../controllers/users_controllers/create_new_user");
-const list_all_users = require("../controllers/users_controllers/list_all_users");
-const {
-  delete_users,
-} = require("../controllers/users_controllers/delete_users");
-const {
-  update_field_of_user,
-} = require("../controllers/users_controllers/update_field_of_user");
+import checkAdminToken from "../middlewares/checkAdminToken.js";
+import authorizeUser from "../middlewares/authorizeUser.js";
+import authenticate_user from "../controllers/auth/authenticate_user.js";
+import { create_new_user } from "../controllers/create_new_user.js";
+import list_all_users from "../controllers/list_all_users.js";
+import delete_users from "../controllers/delete_users.js";
+import { update_field_of_user } from "../controllers/update_field_of_user.js";
 
 //routes
 authRouter.route("/register").post(create_new_user);
@@ -29,4 +23,4 @@ authRouter.get("/currentUser", authorizeUser);
 
 authRouter.route("/:id").patch(authorizeUser, update_field_of_user);
 
-module.exports = authRouter;
+export default authRouter;

@@ -1,4 +1,4 @@
-const User = require('../../db/models/UsersModel');
+import User from "../db/models/UsersModel.js";
 
 const update_field_of_user = async (req, res, next) => {
   // retrieve the id
@@ -10,9 +10,9 @@ const update_field_of_user = async (req, res, next) => {
   if (!condition)
     return res
       .status(400)
-      .send('Please provide a key/value pair of the field you want to update');
+      .send("Please provide a key/value pair of the field you want to update");
 
-  if (condition.role && condition.role === 'admin') {
+  if (condition.role && condition.role === "admin") {
     return res.status(401).send("You can't update the role of an admin");
   }
   try {
@@ -20,11 +20,11 @@ const update_field_of_user = async (req, res, next) => {
       new: true,
     });
 
-    res.status(200).send('User successfully updated');
+    res.status(200).send("User successfully updated");
   } catch (err) {
     next(err);
   }
   return null;
 };
 
-module.exports = { update_field_of_user };
+export { update_field_of_user };

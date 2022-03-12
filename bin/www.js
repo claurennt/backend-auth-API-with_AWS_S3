@@ -4,10 +4,11 @@
  * Module dependencies.
  */
 
-const app = require("../app");
-const debug = require("debug")("merceria-backend:server");
-const http = require("http");
+import app from "../index.js";
+import debug from "debug";
+import http from "http";
 
+debug("backend-auth:server");
 /**
  * Get port from environment and store in Express.
  */

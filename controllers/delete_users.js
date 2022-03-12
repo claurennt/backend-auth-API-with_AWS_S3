@@ -1,4 +1,4 @@
-const User = require('../../db/models/UsersModel');
+import User from "../db/models/UsersModel.js";
 
 const delete_users = async (req, res, next) => {
   const condition = req.body;
@@ -6,7 +6,7 @@ const delete_users = async (req, res, next) => {
   if (!condition) {
     return res
       .status(404)
-      .send('Please provide a key/value pair to filter your query.');
+      .send("Please provide a key/value pair to filter your query.");
   }
   const { deletedCount } = await User.deleteMany(condition);
   return res
@@ -16,4 +16,4 @@ const delete_users = async (req, res, next) => {
     );
 };
 
-module.exports = { delete_users };
+export default delete_users;

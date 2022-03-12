@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 
 const { JWT_ADMIN_KEY } = process.env;
 
@@ -6,9 +6,9 @@ const checkAdminToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader)
-    return res.status(401).send('Access denied. No token provided.');
+    return res.status(401).send("Access denied. No token provided.");
 
-  const authToken = authHeader.split(' ')[1];
+  const authToken = authHeader.split(" ")[1];
   try {
     // check if the admins token passed with the headers matches the JWS ADMIN KEY
     const payload = jwt.verify(authToken, JWT_ADMIN_KEY);
@@ -20,4 +20,4 @@ const checkAdminToken = (req, res, next) => {
   }
 };
 
-module.exports = checkAdminToken;
+export default checkAdminToken;

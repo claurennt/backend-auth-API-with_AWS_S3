@@ -1,15 +1,17 @@
-require("dotenv").config();
-require("./db/Clients");
-const cors = require("cors");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const helmet = require("helmet");
-const bodyParser = require("body-parser");
-const errorHandler = require("./middlewares/errorHandler");
+import "dotenv/config.js";
+import express from "express";
 
-const authRouter = require("./routes/authRouter");
+import "./db/Client.js";
+import cors from "cors";
+
+import path from "path";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import helmet from "helmet";
+import errorHandler from "./middlewares/errorHandler.js";
+import bodyParser from "body-parser";
+
+import authRouter from "./routes/authRouter.js";
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +27,7 @@ app.use(
     exposedHeaders: "x-authorization-token",
   })
 );
+const __dirname = path.resolve();
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "public/index.html"))
 );
@@ -44,4 +47,4 @@ app.use("/public/images/", express.static(__dirname + "/public/images"));
 app.use("/auth", authRouter);
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

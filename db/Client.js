@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 mongoose
   .connect(process.env.MONGODB_URI_USERSDB, {
     useNewUrlParser: true,
@@ -13,4 +14,4 @@ dbClient.on("error", () => console.log("error"));
 
 dbClient.on("disconnected", () => console.log("Disconnected from DB"));
 
-module.exports = dbClient;
+export default dbClient;

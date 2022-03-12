@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
-const bcrypt = require("bcrypt");
-const User = require("../../db/models/UsersModel");
+import bcrypt from "bcrypt";
+import User from "../../db/models/UsersModel.js";
 
-const authenticate_user = async (req, res, next) => {
+const authenticate_user = async (req, res) => {
   const { username, password } = req.body;
 
   // allow selection of password field of user for bycrpyt comparison
@@ -16,8 +16,8 @@ const authenticate_user = async (req, res, next) => {
   if (!isPasswordSame) return res.status(401).send("Invalid credentials");
 
   const token = user.createToken();
-  console.log(token);
+
   return res.set("x-authorization-token", token).send("Login was successfull");
 };
 
-module.exports = authenticate_user;
+export default authenticate_user;
