@@ -15,8 +15,10 @@ const checkUserExistence = async (req, res, next) => {
       return res
         .status(400)
         .send("A user with this email or username is already registered.");
+    
+    next();
   }
-  next();
+  
 };
 
 export default checkUserExistence;
