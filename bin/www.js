@@ -13,7 +13,7 @@ debug("backend-auth:server");
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || 3001);
 app.set("port", port);
 console.log(port);
 /**
@@ -26,7 +26,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port, "localhost");
+server.listen(port, "0.0.0.0");
 server.on("error", onError);
 server.on("listening", onListening);
 
