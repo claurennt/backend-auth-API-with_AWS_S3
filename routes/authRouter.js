@@ -1,26 +1,14 @@
 import express from "express";
 const authRouter = express.Router();
 
-import checkAdminToken from "../middlewares/checkAdminToken.js";
-import authorizeUser from "../middlewares/authorizeUser.js";
-import authenticate_user from "../controllers/auth/authenticate_user.js";
-import { create_new_user } from "../controllers/create_new_user.js";
-import list_all_users from "../controllers/list_all_users.js";
-import delete_users from "../controllers/delete_users.js";
-import { update_field_of_user } from "../controllers/update_field_of_user.js";
+import authenticate_self from "../controllers/auth/authenticate_self.js";
 
-//routes
-authRouter.route("/register").post(create_new_user);
+import { create_new_user } from "../controllers/POST_controllers.js";
 
-authRouter.route("/login").post(authenticate_user);
+import checkUserExistence from "../middlewares/checkUserExistence.js";
 
-authRouter
-  .route("/")
-  .get(checkAdminToken, list_all_users)
-  .delete(checkAdminToken, delete_users);
+authRouter.route("/register").post(checkUserExistence, create_new_user);
 
-authRouter.get("/currentUser", authorizeUser);
-
-authRouter.route("/:id").patch(authorizeUser, update_field_of_user);
+authRouter.route("/login").post(authenticate_self);
 
 export default authRouter;

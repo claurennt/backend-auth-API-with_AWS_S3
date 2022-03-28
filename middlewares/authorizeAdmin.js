@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 const { JWT_ADMIN_KEY } = process.env;
 
-const checkAdminToken = (req, res, next) => {
+const authorizeAdmin = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader)
@@ -20,4 +20,4 @@ const checkAdminToken = (req, res, next) => {
   }
 };
 
-export default checkAdminToken;
+export default authorizeAdmin;

@@ -3,24 +3,19 @@ import bcrypt from "bcrypt";
 
 import User from "../db/models/UsersModel.js";
 
+//creates a new user
 const create_new_user = async (req, res, next) => {
   try {
-    // check if user email or username already exists
-    const userExists = await User.findOne({
-      $or: [{ username: req.body.username }, { email: req.body.email }],
-    });
-
-    if (userExists) {
+    //block request is fields are missing
+    if (!req.body.username || !req.body.email || !req.body.password)
       return res.status(400).json({
-        message: "A user with this email or username is already registered.",
+        message: "Bad request, please provide username, email and password",
       });
-    }
 
     const newUser = new User({
       username: req.body.username,
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, 10),
-      role: req.body.role,
     });
 
     await newUser.save();
@@ -30,6 +25,7 @@ const create_new_user = async (req, res, next) => {
     const token = newUser.createToken();
 
     return res
+      .status(201)
       .set("x-authorization-token", token)
       .json({ _id, email, username });
   } catch (e) {

@@ -15,6 +15,7 @@ const userSchema = new Schema({
     required: true,
     enum: ["admin", "user"],
     select: true,
+    default: "user",
   },
 });
 

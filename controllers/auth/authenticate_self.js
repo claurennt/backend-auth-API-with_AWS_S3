@@ -2,7 +2,7 @@
 import bcrypt from "bcrypt";
 import User from "../../db/models/UsersModel.js";
 
-const authenticate_user = async (req, res) => {
+const authenticate_self = async (req, res) => {
   const { username, password } = req.body;
 
   // allow selection of password field of user for bycrpyt comparison
@@ -20,4 +20,4 @@ const authenticate_user = async (req, res) => {
   return res.set("x-authorization-token", token).send("Login was successfull");
 };
 
-export default authenticate_user;
+export default authenticate_self;

@@ -5,12 +5,13 @@ import "./db/Client.js";
 import cors from "cors";
 
 import path from "path";
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 import logger from "morgan";
 import helmet from "helmet";
 import errorHandler from "./middlewares/errorHandler.js";
 import bodyParser from "body-parser";
 
+import usersRouter from "./routes/usersRouter.js";
 import authRouter from "./routes/authRouter.js";
 
 const app = express();
@@ -34,16 +35,13 @@ app.get("/", (req, res) =>
 app.get("/favicon.ico", (req, res) => res.status(204).send("no content"));
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "public")));
 
-//use this middleware to serve static files when the route is prefixed with /public
-app.use("/public/images/", express.static(__dirname + "/public/images"));
-
+app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use(errorHandler);
 
