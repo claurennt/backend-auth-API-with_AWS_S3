@@ -4,6 +4,8 @@ const { JWT_SECRET_KEY, JWT_ADMIN_KEY } = process.env;
 
 const authorizeUser = (req, res, next) => {
   try {
+    const { originalUrl } = req;
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader)
@@ -18,6 +20,10 @@ const authorizeUser = (req, res, next) => {
 
     //get role for role-based jwt verification
     const { role } = decodedUserData;
+
+    //block requests on path /users if role is not admin
+    if (originalUrl === "/users" && role === "user")
+      return res.status(403).send("Missing admin rights");
 
     //verify the token against the key depending on the role decoded from the token
     const userContext = jwt.verify(

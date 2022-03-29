@@ -2,14 +2,7 @@ import User from "../db/models/UsersModel.js";
 
 const delete_users = async (req, res, next) => {
   try {
-    const condition = req.body;
-
-    if (!condition) {
-      return res
-        .status(404)
-        .send("Please provide a key/value pair to filter your query.");
-    }
-    const { deletedCount } = await User.deleteMany(condition);
+    const { deletedCount } = await User.deleteMany();
     return res
       .status(200)
       .send(

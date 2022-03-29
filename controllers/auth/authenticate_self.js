@@ -3,13 +3,16 @@ import bcrypt from "bcrypt";
 import User from "../../db/models/UsersModel.js";
 
 const authenticate_self = async (req, res) => {
+  if (!req.body.username || !req.body.password)
+    return res.status(400).send("Missing username or password");
+
   const { username, password } = req.body;
 
   // allow selection of password field of user for bycrpyt comparison
   const user = await User.findOne({ username }).select("+password");
 
   if (!user)
-    return res.status(401).send("A user with this email does not exist.");
+    return res.status(401).send("A user with this username does not exist.");
 
   const isPasswordSame = await bcrypt.compare(password, user.password);
 

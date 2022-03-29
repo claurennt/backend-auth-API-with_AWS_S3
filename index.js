@@ -28,10 +28,11 @@ app.use(
     exposedHeaders: "x-authorization-token",
   })
 );
+
 const __dirname = path.resolve();
-app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "public/index.html"))
-);
+
+app.get("/", (req, res) => res.sendFile(__dirname + "/public/index.html"));
+
 app.get("/favicon.ico", (req, res) => res.status(204).send("no content"));
 
 // view engine setup

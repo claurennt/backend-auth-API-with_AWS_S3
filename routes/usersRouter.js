@@ -1,7 +1,6 @@
 import express from "express";
 const usersRouter = express.Router();
 
-import authorizeAdmin from "../middlewares/authorizeAdmin.js";
 import authorizeUser from "../middlewares/authorizeUser.js";
 import checkUserExistence from "../middlewares/checkUserExistence.js";
 import { get_all_users, get_self } from "../controllers/GET_controllers.js";
@@ -15,8 +14,8 @@ import { update_self } from "../controllers/PATCH_controllers.js";
 
 usersRouter
   .route("/")
-  .get(authorizeAdmin, get_all_users)
-  .delete(authorizeAdmin, delete_users);
+  .get(authorizeUser, get_all_users)
+  .delete(authorizeUser, delete_users);
 
 usersRouter
   .route("/me")

@@ -5,6 +5,7 @@ import dbClient from "../Client.js";
 import jwt from "jsonwebtoken";
 
 const Schema = mongoose.Schema;
+
 // the schema is the blueprint of our  model
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
@@ -12,10 +13,8 @@ const userSchema = new Schema({
   password: { type: String, required: true, select: false },
   role: {
     type: String,
-    required: true,
-    enum: ["admin", "user"],
-    select: true,
     default: "user",
+    enum: ["user", "admin"],
   },
 });
 
