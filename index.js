@@ -1,28 +1,27 @@
 import "dotenv/config.js";
 import express from "express";
 
-import "./db/Client.js";
+import "./db/client.js";
 import cors from "cors";
 
 import path from "path";
-// import cookieParser from "cookie-parser";
+
 import logger from "morgan";
 import helmet from "helmet";
 import errorHandler from "./middlewares/errorHandler.js";
-import bodyParser from "body-parser";
 
-import usersRouter from "./routes/usersRouter.js";
-import authRouter from "./routes/authRouter.js";
+import usersRouter from "./routes/users.js";
+import authRouter from "./routes/auth.js";
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse application/json
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(helmet());
 app.use(logger("dev"));
-app.use(express.json());
+
 app.use(
   cors({
     exposedHeaders: "x-authorization-token",
@@ -35,9 +34,6 @@ app.get("/", (req, res) => res.sendFile(__dirname + "/public/index.html"));
 
 app.get("/favicon.ico", (req, res) => res.status(204).send("no content"));
 
-// view engine setup
-
-app.use(express.urlencoded({ extended: true }));
 // app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "public")));

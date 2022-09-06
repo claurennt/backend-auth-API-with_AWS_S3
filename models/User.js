@@ -1,7 +1,7 @@
 // here we create our schema and the  compile our schema into a model
 import mongoose from "mongoose";
 
-import dbClient from "../Client.js";
+import dbClient from "../db/client.js";
 import jwt from "jsonwebtoken";
 
 const Schema = mongoose.Schema;

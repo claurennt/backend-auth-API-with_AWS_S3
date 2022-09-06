@@ -15,7 +15,7 @@ debug("backend-auth:server");
 
 const port = normalizePort(process.env.PORT || 3001);
 app.set("port", port);
-console.log(port);
+
 /**
  * Create HTTP server.
  */
@@ -83,6 +83,6 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-
+  console.log(`Server is listening on ${bind}`);
   debug("Listening on " + bind);
 }

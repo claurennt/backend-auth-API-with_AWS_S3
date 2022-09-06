@@ -5,7 +5,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("connected to MongoDB"))
+  .then(() => console.log("Successfully connected to MongoDB"))
   .catch((e) => console.log("Error on initial connection:", e));
 
 const dbClient = mongoose.connection;

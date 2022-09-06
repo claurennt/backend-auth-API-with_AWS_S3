@@ -1,9 +1,9 @@
 import express from "express";
 const authRouter = express.Router();
 
-import authenticate_self from "../controllers/auth/authenticate_self.js";
+import authenticate_self from "../controllers/auth.js";
 
-import { create_new_user } from "../controllers/POST_controllers.js";
+import { create_new_user } from "../controllers/users.js";
 
 import checkUserExistence from "../middlewares/checkUserExistence.js";
 

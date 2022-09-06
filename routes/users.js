@@ -3,12 +3,14 @@ const usersRouter = express.Router();
 
 import authorizeUser from "../middlewares/authorizeUser.js";
 import checkUserExistence from "../middlewares/checkUserExistence.js";
-import { get_all_users, get_self } from "../controllers/GET_controllers.js";
+
 import {
+  get_all_users,
+  get_self,
   delete_users,
   delete_self,
-} from "../controllers/DELETE_controllers.js";
-import { update_self } from "../controllers/PATCH_controllers.js";
+  update_self,
+} from "../controllers/users.js";
 
 //routes
 
@@ -20,7 +22,7 @@ usersRouter
 usersRouter
   .route("/me")
   .get(authorizeUser, get_self)
-  .patch(authorizeUser, checkUserExistence, update_self)
+  .patch(authorizeUser, update_self)
   .delete(authorizeUser, delete_self);
 
 export default usersRouter;
