@@ -1,7 +1,7 @@
 import "dotenv/config.js";
 import express from "express";
 
-import "./db/Client.js";
+import "./db/client.js";
 import cors from "cors";
 
 import path from "path";
