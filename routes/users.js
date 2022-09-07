@@ -2,22 +2,25 @@ import express from "express";
 const usersRouter = express.Router();
 
 import authorizeUser from "../middlewares/authorizeUser.js";
-import checkUserExistence from "../middlewares/checkUserExistence.js";
 
 import {
   get_all_users,
   get_self,
   delete_users,
   delete_self,
+  create_new_user,
   update_self,
 } from "../controllers/users.js";
 
+import checkUserExistence from "../middlewares/checkUserExistence.js";
 //routes
 
 usersRouter
   .route("/")
   .get(authorizeUser, get_all_users)
   .delete(authorizeUser, delete_users);
+
+usersRouter.route("/register").post(create_new_user);
 
 usersRouter
   .route("/me")

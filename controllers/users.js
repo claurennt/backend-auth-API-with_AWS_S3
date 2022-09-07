@@ -31,7 +31,7 @@ const delete_users = async (req, res, next) => {
 const create_new_user = async (req, res, next) => {
   try {
     const { username, email, password, role } = req.body;
-
+    console.log(username, email, password);
     //block request is fields are missing
     if (!username || !email || !password)
       return res.status(400).json({
