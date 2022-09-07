@@ -22,7 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(logger("dev"));
 
-app.use(cors({ origin: "*", exposedHeaders: "x-authorization-token" }));
+const corsOptions = {
+  origin: "*",
+  exposedHeaders: "x-authorization-token", // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 
 const __dirname = path.resolve();
 
