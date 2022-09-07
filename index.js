@@ -22,11 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(logger("dev"));
 
-app.use(
-  cors({
-    exposedHeaders: "x-authorization-token",
-  })
-);
+app.use(cors({ origin: "*", exposedHeaders: "x-authorization-token" }));
 
 const __dirname = path.resolve();
 

@@ -1,7 +1,6 @@
 import User from "../models/User.js";
 
 const checkUserExistence = async (req, res, next) => {
-  console.log(req.method);
   try {
     /* check if user email or username already exists with information coming from the request*/
     if (
