@@ -1,7 +1,6 @@
 // here we create our schema and the  compile our schema into a model
 import mongoose from "mongoose";
 
-import dbClient from "../db/client.js";
 import jwt from "jsonwebtoken";
 
 const Schema = mongoose.Schema;
@@ -42,6 +41,6 @@ userSchema.methods.createToken = function () {
   return token;
 };
 //create the model out of the imported schema
-const User = dbClient.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;
