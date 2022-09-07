@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
 
   console.log(err.stack);
   /*send a response with the error message*/
-  res.status(500).send("An error has occured. The admin has been informed");
+  res.status(500).send(err);
 };
 
 export default errorHandler;
