@@ -12,7 +12,7 @@ import errorHandler from './middlewares/errorHandler.js';
 
 import usersRouter from './routes/users.js';
 import authRouter from './routes/auth.js';
-
+import upload from './middlewares/s3-imageUpload.js';
 const app = express();
 
 // parse application/json
@@ -32,6 +32,8 @@ const __dirname = path.resolve();
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
+app.get('/s3', (req, res) => res.sendFile(__dirname + '/public/form.html'));
+app.post('/s3', upload.single('profile'), (req, res) => console.log(req.file));
 app.get('/favicon.ico', (req, res) => res.status(204).send('no content'));
 
 // app.use(cookieParser());
