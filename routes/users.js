@@ -2,7 +2,7 @@ import express from "express";
 const usersRouter = express.Router();
 
 import authorizeUser from "../middlewares/authorizeUser.js";
-
+import S3upload from "../middlewares/s3-imageUpload.js";
 import {
   get_all_users,
   get_self,
@@ -20,7 +20,7 @@ usersRouter
   .get(authorizeUser, get_all_users)
   .delete(authorizeUser, delete_users);
 
-usersRouter.route("/register").post(create_new_user);
+usersRouter.route("/register").post(S3upload, create_new_user);
 
 usersRouter
   .route("/me")
