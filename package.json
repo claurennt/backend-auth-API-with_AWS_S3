@@ -13,6 +13,7 @@
     "windev": "set DEBUG=backend-auth:* & npm run watch"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.169.0",
     "atob": "^2.1.2",
     "aws-sdk": "^2.1211.0",
     "bcrypt": "^5.0.1",

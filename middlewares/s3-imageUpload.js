@@ -1,7 +1,7 @@
-import { S3Client } from "@aws-sdk/client-s3";
-import multer from "multer";
-import multerS3 from "multer-s3";
-import aws from "aws-sdk";
+import { S3Client } from '@aws-sdk/client-s3';
+import multer from 'multer';
+import multerS3 from 'multer-s3';
+import aws from 'aws-sdk';
 
 const {
   AWS_BUCKET_NAME,
@@ -19,23 +19,23 @@ aws.config.update({
 const s3 = new S3Client();
 
 const fileFilter = (req, file, cb) => {
-  const [, fileType] = file.mimetype.split("/");
+  const [, fileType] = file.mimetype.split('/');
 
   //retrieve extension from the mymetype property and test it against the regexp to allow only certain extensions
   fileType.match(/^(png|jpeg|jpg)$/gi)
     ? cb(null, true)
-    : cb(new Error("Invalid file type, only JPEG and PNG is allowed!"), false);
+    : cb(new Error('Invalid file type, only JPEG and PNG is allowed!'), false);
 };
 
 const storage = multerS3({
   s3: s3,
   bucket: AWS_BUCKET_NAME,
-  acl: "public-read",
+  acl: 'public-read',
   metadata: (req, file, cb) => {
     cb(null, { fieldName: file.fieldname });
   },
   key: function (req, file, cb) {
-    const extension = file.mimetype.split("/")[1];
+    const extension = file.mimetype.split('/')[1];
     const fileName = Date.now().toString();
     cb(null, `${fileName}.${extension}`);
   },
@@ -46,4 +46,4 @@ const upload = multer({
   storage: storage,
 });
 
-export default upload.single("profile_pic");
+export default upload;

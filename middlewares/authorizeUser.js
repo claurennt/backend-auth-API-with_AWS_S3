@@ -5,7 +5,7 @@ const { JWT_SECRET_KEY, JWT_ADMIN_KEY } = process.env;
 const authorizeUser = (req, res, next) => {
   try {
     const { originalUrl } = req;
-
+    console.log(originalUrl);
     const authHeader = req.headers.authorization;
 
     if (!authHeader)

@@ -32,14 +32,20 @@ const create_new_user = async (req, res, next) => {
   try {
     //grab url from uploaded file on S3
     const { location } = req.file;
-    const { data } = req.body;
-    const { username, email, password, role } = JSON.parse(data);
 
+    // const { username, email, password, role } = JSON.parse(data);
+    const { username, email, password, role } = req.body;
     //block request is fields are missing
     if (!username || !email || !password || !location)
       return res.status(400).json({
-        message: "Bad request, please provide username, email and password",
+        message:
+          "Bad request, please provide username, email, image and password",
       });
+
+    if (role && role === "admin")
+      return res
+        .status(403)
+        .send("You are not allowed to create an admin user");
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
