@@ -5,7 +5,7 @@ import User from "../models/User.js";
 //login request handler
 const authenticate_self = async (req, res) => {
   const { username, password } = req.body;
-
+  console.log(req.body);
   if (!username || !password)
     return res.status(400).send("Missing username or password");
 
@@ -13,7 +13,7 @@ const authenticate_self = async (req, res) => {
   const user = await User.findOne({ username }).select("+password");
 
   if (!user)
-    return res.status(401).send("A user with this username does not exist.");
+    return res.status(404).send("A user with this username does not exist.");
 
   //check valifity of sent password against the password stored in the user document in the db
   const isPasswordSame = await bcrypt.compare(password, user.password);

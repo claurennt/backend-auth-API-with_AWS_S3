@@ -7,7 +7,7 @@ const checkUserExistence = async (req, res, next) => {
     const userExists = await User.findOne({
       $or: [{ username: req.body.username }, { email: req.body.email }],
     });
-    console.log(userExists);
+
     if (userExists)
       return res
         .status(400)

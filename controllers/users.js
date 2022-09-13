@@ -1,6 +1,6 @@
-import User from '../models/User.js';
+import User from "../models/User.js";
 
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 // eslint-disable-next-line consistent-return
 const get_all_users = async (req, res) => {
@@ -8,7 +8,7 @@ const get_all_users = async (req, res) => {
 
   return users.length
     ? res.status(200).json(users)
-    : res.status(404).send('No users found');
+    : res.status(404).send("No users found");
 };
 
 //sends information about the current user, coming from the authorizeUser middleware
@@ -31,15 +31,21 @@ const delete_users = async (req, res, next) => {
 const create_new_user = async (req, res, next) => {
   try {
     //grab url from uploaded file on S3
-    // const { location } = req.file;
-    // const { data } = req.body;
+    const { location } = req.file;
+
     // const { username, email, password, role } = JSON.parse(data);
     const { username, email, password, role } = req.body;
     //block request is fields are missing
-    if (!username || !email || !password)
+    if (!username || !email || !password || !location)
       return res.status(400).json({
-        message: 'Bad request, please provide username, email and password',
+        message:
+          "Bad request, please provide username, email, image and password",
       });
+
+    if (role && role === "admin")
+      return res
+        .status(403)
+        .send("You are not allowed to create an admin user");
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -48,7 +54,7 @@ const create_new_user = async (req, res, next) => {
       email,
       password: hashedPassword,
       role: role && role,
-      // profile_pic: location,
+      profile_pic: location,
     });
 
     await newUser.save();
@@ -59,12 +65,10 @@ const create_new_user = async (req, res, next) => {
 
     return res
       .status(201)
-      .set('x-authorization-token', token)
+      .set("x-authorization-token", token)
       .json({
-        message: 'Successfully created a new user',
-        userRegistrationData: [
-          { _id, email, username /*profile_pic: location */ },
-        ],
+        message: "Successfully created a new user",
+        userRegistrationData: [{ _id, email, username, profile_pic: location }],
       });
   } catch (e) {
     next(e);
@@ -84,9 +88,9 @@ const update_self = async (req, res, next) => {
       return res
         .status(400)
         .send(
-          'Please provide a key/value pair of the field(s) you want to update'
+          "Please provide a key/value pair of the field(s) you want to update"
         );
-    console.log('hey');
+    console.log("hey");
     let [[key, value]] = condition;
     //block if the user is trying to change its role
     // if (condition.role && condition.role === "admin") {
@@ -94,7 +98,7 @@ const update_self = async (req, res, next) => {
     // }
 
     //hash the password if the user is updating the password
-    if (key === 'password') value = await bcrypt.hash(value, 10);
+    if (key === "password") value = await bcrypt.hash(value, 10);
 
     const isUpdated = await User.findByIdAndUpdate(
       _id,
@@ -105,10 +109,10 @@ const update_self = async (req, res, next) => {
     );
     console.log(isUpdated);
     return isUpdated
-      ? res.status(200).send('User successfully updated')
+      ? res.status(200).send("User successfully updated")
       : res
           .status(404)
-          .send('The user you are trying to update does not exist');
+          .send("The user you are trying to update does not exist");
   } catch (err) {
     next(err);
   }
@@ -120,10 +124,10 @@ const delete_self = async (req, res, next) => {
 
     const isDeleted = await User.findByIdAndDelete(_id);
     return isDeleted
-      ? res.status(200).send('Successfully deleted user from the database')
+      ? res.status(200).send("Successfully deleted user from the database")
       : res
           .status(404)
-          .send('The user you are trying to delete does not exist');
+          .send("The user you are trying to delete does not exist");
   } catch (err) {
     next(err);
   }

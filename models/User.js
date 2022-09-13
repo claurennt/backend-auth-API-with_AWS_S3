@@ -28,6 +28,7 @@ userSchema.methods.createToken = function () {
     email: this.email,
     username: this.username,
     role: this.role,
+    profile_pic: this.profile_pic,
   };
 
   //retrieve the secret key for the signing
