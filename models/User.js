@@ -15,7 +15,7 @@ const userSchema = new Schema({
     default: "user",
     enum: ["user", "admin"],
   },
-  profile_pic: String,
+  photos: Array,
 });
 
 userSchema.methods.createToken = function () {

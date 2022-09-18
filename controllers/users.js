@@ -2,6 +2,8 @@ import User from "../models/User.js";
 
 import bcrypt from "bcrypt";
 
+import createImageCustomObject from "../utils/createImageObject.js";
+
 // eslint-disable-next-line consistent-return
 const get_all_users = async (req, res) => {
   const users = await User.find();
@@ -77,7 +79,12 @@ const create_new_user = async (req, res, next) => {
 
 const update_self = async (req, res, next) => {
   // retrieve the id
+  const { cover_pic, profile_pic } = req.files;
 
+  const customImageObject = {};
+  for (const prop in req.files) {
+    createImageCustomObject(req.files[prop]);
+  }
   const { _id } = req.currentUser;
 
   try {
@@ -90,26 +97,29 @@ const update_self = async (req, res, next) => {
         .send(
           "Please provide a key/value pair of the field(s) you want to update"
         );
-    console.log("hey");
-    let [[key, value]] = condition;
+
     //block if the user is trying to change its role
     // if (condition.role && condition.role === "admin") {
     //   return res.status(401).send("You can't update the role");
     // }
 
     //hash the password if the user is updating the password
-    if (key === "password") value = await bcrypt.hash(value, 10);
+    if (req.body.password)
+      req.body.password = await bcrypt.hash(req.body.password, 10);
 
-    const isUpdated = await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       _id,
-      { [key]: value },
+      req.body,
+
       {
         new: true,
       }
     );
-    console.log(isUpdated);
-    return isUpdated
-      ? res.status(200).send("User successfully updated")
+    console.log(updatedUser);
+    return updatedUser
+      ? res
+          .status(200)
+          .json({ message: "User successfully updated", updatedUser })
       : res
           .status(404)
           .send("The user you are trying to update does not exist");
