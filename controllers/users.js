@@ -1,6 +1,8 @@
-import User from "../models/User.js";
+import User from '../models/User.js';
 
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
+
+import createImageCustomObject from '../utils/createImageObject.js';
 
 // eslint-disable-next-line consistent-return
 const get_all_users = async (req, res) => {
@@ -8,7 +10,7 @@ const get_all_users = async (req, res) => {
 
   return users.length
     ? res.status(200).json(users)
-    : res.status(404).send("No users found");
+    : res.status(404).send('No users found');
 };
 
 //sends information about the current user, coming from the authorizeUser middleware
@@ -39,13 +41,13 @@ const create_new_user = async (req, res, next) => {
     if (!username || !email || !password || !location)
       return res.status(400).json({
         message:
-          "Bad request, please provide username, email, image and password",
+          'Bad request, please provide username, email, image and password',
       });
 
-    if (role && role === "admin")
+    if (role && role === 'admin')
       return res
         .status(403)
-        .send("You are not allowed to create an admin user");
+        .send('You are not allowed to create an admin user');
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -65,9 +67,9 @@ const create_new_user = async (req, res, next) => {
 
     return res
       .status(201)
-      .set("x-authorization-token", token)
+      .set('x-authorization-token', token)
       .json({
-        message: "Successfully created a new user",
+        message: 'Successfully created a new user',
         userRegistrationData: [{ _id, email, username, profile_pic: location }],
       });
   } catch (e) {
@@ -76,43 +78,39 @@ const create_new_user = async (req, res, next) => {
 };
 
 const update_self = async (req, res, next) => {
-  // retrieve the id
-
   const { _id } = req.currentUser;
 
   try {
-    // check if the user provided a body that will be used to perform the update
-    const condition = Object.entries(req.body);
-
-    if (!condition.length)
-      return res
-        .status(400)
-        .send(
-          "Please provide a key/value pair of the field(s) you want to update"
-        );
-    console.log("hey");
-    let [[key, value]] = condition;
-    //block if the user is trying to change its role
-    // if (condition.role && condition.role === "admin") {
-    //   return res.status(401).send("You can't update the role");
-    // }
-
     //hash the password if the user is updating the password
-    if (key === "password") value = await bcrypt.hash(value, 10);
+    if (req.body.password)
+      req.body.password = await bcrypt.hash(req.body.password, 10);
 
-    const isUpdated = await User.findByIdAndUpdate(
-      _id,
-      { [key]: value },
-      {
-        new: true,
+    const userToUpdate = await User.findById(_id);
+
+    for (const key in req.files) {
+      if (key === 'profile_pic' || key === 'cover_pic') {
+        const customImageObject = createImageCustomObject(req.files[key]);
+        const index = userToUpdate.photos.findIndex(
+          (photo) => photo.fieldname === key
+        );
+        if (index >= 0) {
+          userToUpdate.photos[index] = customImageObject;
+        }
       }
-    );
-    console.log(isUpdated);
-    return isUpdated
-      ? res.status(200).send("User successfully updated")
+    }
+    for (const key in req.body) {
+      userToUpdate[key] = req.body[key];
+    }
+
+    const updatedUser = await userToUpdate.save();
+
+    return updatedUser
+      ? res
+          .status(200)
+          .json({ message: 'User successfully updated', updatedUser })
       : res
           .status(404)
-          .send("The user you are trying to update does not exist");
+          .send('The user you are trying to update does not exist');
   } catch (err) {
     next(err);
   }
@@ -124,10 +122,10 @@ const delete_self = async (req, res, next) => {
 
     const isDeleted = await User.findByIdAndDelete(_id);
     return isDeleted
-      ? res.status(200).send("Successfully deleted user from the database")
+      ? res.status(200).send('Successfully deleted user from the database')
       : res
           .status(404)
-          .send("The user you are trying to delete does not exist");
+          .send('The user you are trying to delete does not exist');
   } catch (err) {
     next(err);
   }
