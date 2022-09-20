@@ -3,7 +3,7 @@
 
   <div>
     <h3> <span>POST</span> /users/register</h3>
-    <p><strong>Creates a new user</strong> -> Expects an email, username and password in the body of the request <code>{"email": $email, "username": $username, "password": $password} </code> and returns a response with an auth token in the headers</p>
+    <p><strong>Creates a new user</strong> -> Expects an email, username and password in the body of the request + a "profile_pic" file <code>{"email": $email, "username": $username, "password": $password, $profile_pic: File} </code> and returns a response with an auth token in the headers</p>
     <h3> <span>POST</span> /auth/login</h3>
     <p><strong>Authenticates an existing user</strong> -> Expects a username and password in the body of the request <code>{"username":$username, "password":$password} </code> and returns a response with an auth token in the headers</p>
     <h3><span>GET</span> /users</h3>
